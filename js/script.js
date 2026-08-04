@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const observer = new IntersectionObserver(function (entries) {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
@@ -58,9 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Observe all glass cards and projects
     const cards = document.querySelectorAll('.glass-card, .project');
     cards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'all 0.6s ease';
+        card.classList.add('reveal');
         observer.observe(card);
     });
 
@@ -86,19 +84,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Parallax effect on scroll (subtle)
-    const parallaxElements = document.querySelectorAll('.glass-card');
-    window.addEventListener('scroll', function () {
-        parallaxElements.forEach(element => {
-            const scrollPosition = window.scrollY;
-            const elementPosition = element.offsetTop;
-            const distance = scrollPosition - elementPosition;
-
-            if (distance > -window.innerHeight && distance < window.innerHeight) {
-                element.style.transform = `translateY(${distance * 0.1}px)`;
-            }
-        });
-    });
 });
 
 // Prevent multiple click handlers on close button
